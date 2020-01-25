@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>W3.CSS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="w3-container">
+
+    <div class="w3-card-4">
+        <div class="w3-container w3-green" align="center">
+            <h2>Staff Entry</h2>
+        </div>
+        <form class="w3-container">
+            <div>
+                <label>Staff Name</label>
+                <input class="w3-input" type="text">
+            </div>
+            <div>
+                <label>Age</label>
+                <input class="w3-input" name="age" type="text">
+            </div>
+            <div>
+                <label>Address</label>
+                <input class="w3-input" type="text">
+            </div>
+            <div>
+                <label>Course</label>
+                <select style="margin-bottom:20px;margin-top:10px; ">
+                    <option value="volvo">Computer Technology</option>
+                    <option value="saab">BCA</option>
+                    <option value="opel">Information Technology</option>
+                    <option value="audi">Computer Science</option>
+                </select>
+            </div>
+            <div><button type="submit" style="margin-top:10px">Submit</button> &nbsp<button type="reset" style="margin-bottom:20px">Reset</button></div>
+        </form>
+    </div>
+</div>
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Cource</th>
+            </tr>
+        </thead>
+        <tbody id="TBody">
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        LoadGrid();
+    });
+
+    function LoadGrid()
+    {
+        var row = "";
+        $.ajax({
+            url: "@Url.Action("GetStaffDetails")",
+            data: null,
+            method: "GET",
+            async: false
+        }).done(function (result) {
+            $.each(result, function (key, value) {
+                row += '<tr><td><label style="font-weight:500;text-transform: uppercase;">' + value.Name + '</label></td>';
+                row += '<td><label style="font-weight:500;text-transform: uppercase;">' + value.Age + '</label></td>';
+                row += '<td><label style="font-weight:500;text-transform: uppercase;">' + value.Address + '</label></td>';
+                row += '<td><label style="font-weight:500;text-transform: uppercase;">' + value.Cource + '</label></td></tr>';
+            });
+            $("#TBody").html(row);
+        }).fail(function (result) {
+            alert('Failed to load');
+        });
+    }
+
+</script>

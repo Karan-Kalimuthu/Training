@@ -1,0 +1,89 @@
+﻿    @{
+    Layout = null;
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>W3.CSS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="w3-container w3-brown">
+        <h2 align="center">Task</h2>
+    </div>
+    <form class="w3-container" action="/action_page">
+        <div>
+            <label class="w3-text-brown"><b>Task Name</b></label>
+            <input class="w3-input w3-border w3-sand" name="Tname" type="text">
+        </div>
+        <div>
+            <label class="w3-text-brown"><b>Task Status</b></label>
+            <input class="w3-input w3-border w3-sand" name="Tstatus" type="text">
+        </div>
+        <div>
+            <label class="w3-text-brown"><b>Task Date</b></label>
+            <input class="w3-input w3-border w3-sand" name="TDate" type="date">
+        </div>
+        <div>
+            <button class="w3-btn w3-brown" type="submit">Register</button>&nbsp<button class="w3-btn w3-brown" type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Task_Name</th>
+                <th>Task_Status</th>
+                <th>Task_Date</th>
+            </tr>
+        </thead>
+        <tbody id="TBody">
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        LoadGrid();
+    });
+
+    function LoadGrid()
+    {
+        var row = "";
+        $.ajax({
+            url: "@Url.Action("GetTaskDetails")",
+            data: null,
+            method: "GET",
+            async: false
+        }).done(function (result) {
+            $.each(result, function (key, value) {
+                var date = value.Task_Date;
+                var nowDate = new Date(parseInt(date.substr(6)));
+                row += '<tr><td><label style="font-weight:500;text-transform: uppercase;">' + value.Task_Name + '</label></td>';
+                row += '<td><label style="font-weight:500;text-transform: uppercase;">' + value.Task_Status + '</label></td>';
+                row += '<td><label style="font-weight:500;text-transform: uppercase;">' + nowDate.getDate() + "/" + nowDate.getMonth() + "/" + nowDate.getFullYear() + '</label></td></tr>';
+            });
+            $("#TBody").html(row);
+        }).fail(function (result) {
+            alert('Failed to load');
+        });
+    }
+
+</script>
